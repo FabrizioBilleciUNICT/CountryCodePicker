@@ -80,8 +80,8 @@ class _SelectionDialogState extends State<SelectionDialog> {
                 ],
               ),
           child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.max,
             children: [
               Stack(
                 children: [
@@ -99,6 +99,7 @@ class _SelectionDialogState extends State<SelectionDialog> {
                   ),
                 ],
               ),
+              const SizedBox(height: 20,),
               if (!widget.hideSearch)
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 24),
