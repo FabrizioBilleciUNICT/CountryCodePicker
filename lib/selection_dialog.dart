@@ -27,6 +27,9 @@ class SelectionDialog extends StatefulWidget {
   /// elements passed as favorite
   final List<CountryCode> favoriteElements;
 
+  final bool? showBoxShadow;
+  final Widget? header;
+
   SelectionDialog(
     this.elements,
     this.favoriteElements, {
@@ -45,6 +48,8 @@ class SelectionDialog extends StatefulWidget {
     this.barrierColor,
     this.hideSearch = false,
     this.closeIcon,
+    this.showBoxShadow = false,
+    this.header
   })  : this.searchDecoration = searchDecoration.prefixIcon == null
             ? searchDecoration.copyWith(prefixIcon: Icon(Icons.search))
             : searchDecoration,
@@ -69,36 +74,29 @@ class _SelectionDialogState extends State<SelectionDialog> {
           decoration: widget.boxDecoration ??
               BoxDecoration(
                 color: widget.backgroundColor ?? Colors.white,
-                borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                borderRadius: BorderRadius.all(Radius.circular(25.0)),
                 boxShadow: [
-                  BoxShadow(
-                    color: widget.barrierColor ?? Colors.grey.withOpacity(1),
-                    spreadRadius: 5,
-                    blurRadius: 7,
-                    offset: Offset(0, 3), // changes position of shadow
-                  ),
+                  if (widget.showBoxShadow == true)
+                    BoxShadow(
+                      color: widget.barrierColor ?? Colors.grey.withOpacity(1),
+                      spreadRadius: 5,
+                      blurRadius: 7,
+                      offset: Offset(0, 3), // changes position of shadow
+                    ),
                 ],
               ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisSize: MainAxisSize.max,
             children: [
-              Stack(
-                children: [
-                  Center(
-                    child: Text('Seleziona un prefisso internazionale'),
-                  ),
-                  Positioned(
-                    right: 14,
-                    child: IconButton(
+              widget.header != null
+                  ? widget.header!
+                  : IconButton(
                       padding: const EdgeInsets.all(0),
-                      iconSize: 20,
+                      iconSize: 120,
                       icon: widget.closeIcon!,
                       onPressed: () => Navigator.pop(context),
-                    ),
                   ),
-                ],
-              ),
               const SizedBox(height: 20,),
               if (!widget.hideSearch)
                 Padding(

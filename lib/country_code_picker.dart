@@ -84,6 +84,8 @@ class CountryCodePicker extends StatefulWidget {
   /// with customized codes.
   final List<Map<String, String>> countryList;
 
+  final Widget? header;
+
   CountryCodePicker({
     this.onChanged,
     this.onInit,
@@ -118,6 +120,7 @@ class CountryCodePicker extends StatefulWidget {
     this.dialogBackgroundColor,
     this.closeIcon = const Icon(Icons.close),
     this.countryList = codes,
+    this.header,
     Key? key,
   }) : super(key: key);
 
@@ -310,6 +313,7 @@ class CountryCodePickerState extends State<CountryCodePicker> {
                 hideSearch: widget.hideSearch,
                 closeIcon: widget.closeIcon,
                 flagDecoration: widget.flagDecoration,
+                header: widget.header,
               ),
             ),
           ),
@@ -347,6 +351,7 @@ class CountryCodePickerState extends State<CountryCodePicker> {
             barrierColor: widget.barrierColor,
             hideSearch: widget.hideSearch,
             closeIcon: widget.closeIcon,
+            header: widget.header,
           ),
       ).then((e) {
         if (e != null) {
