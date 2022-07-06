@@ -66,88 +66,103 @@ class _SelectionDialogState extends State<SelectionDialog> {
   late List<CountryCode> filteredElements;
 
   @override
-  Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.all(0.0),
-        child: Container(
-          clipBehavior: Clip.hardEdge,
-          width: widget.size?.width ?? MediaQuery.of(context).size.width,
-          height:
-              widget.size?.height ?? MediaQuery.of(context).size.height * 0.85,
-          decoration: widget.boxDecoration ??
-              BoxDecoration(
-                color: widget.backgroundColor ?? Colors.white,
-                borderRadius: BorderRadius.all(Radius.circular(25.0)),
-                boxShadow: [
-                  if (widget.showBoxShadow == true)
-                    BoxShadow(
-                      color: widget.barrierColor ?? Colors.grey.withOpacity(1),
-                      spreadRadius: 5,
-                      blurRadius: 7,
-                      offset: Offset(0, 3), // changes position of shadow
+  Widget build(BuildContext context) {
+    double textWidth = MediaQuery
+        .of(context)
+        .size
+        .width - 200;
+
+    return Padding(
+      padding: const EdgeInsets.all(0.0),
+      child: Container(
+        clipBehavior: Clip.hardEdge,
+        width: widget.size?.width ?? MediaQuery
+            .of(context)
+            .size
+            .width,
+        height:
+        widget.size?.height ?? MediaQuery
+            .of(context)
+            .size
+            .height * 0.85,
+        decoration: widget.boxDecoration ??
+            BoxDecoration(
+              color: widget.backgroundColor ?? Colors.white,
+              borderRadius: BorderRadius.all(Radius.circular(25.0)),
+              boxShadow: [
+                if (widget.showBoxShadow == true)
+                  BoxShadow(
+                    color: widget.barrierColor ?? Colors.grey.withOpacity(1),
+                    spreadRadius: 5,
+                    blurRadius: 7,
+                    offset: Offset(0, 3), // changes position of shadow
+                  ),
+              ],
+            ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            widget.header != null
+                ? widget.header!
+                : IconButton(
+              padding: const EdgeInsets.all(0),
+              iconSize: 40,
+              icon: widget.closeIcon!,
+              onPressed: () => Navigator.pop(context),
+            ),
+            const SizedBox(height: 20,),
+            if (!widget.hideSearch)
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
+                child: TextField(
+                  style: widget.searchStyle,
+                  decoration: widget.searchDecoration,
+                  onChanged: _filterElements,
+                ),
+              ),
+            Expanded(
+              child: ListView(
+                children: [
+                  widget.favoriteElements.isEmpty
+                      ? const DecoratedBox(decoration: BoxDecoration())
+                      : Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      ...widget.favoriteElements.map(
+                            (f) =>
+                            SimpleDialogOption(
+                              child: _buildOption(f, textWidth),
+                              onPressed: () {
+                                _selectItem(f);
+                              },
+                            ),
+                      ),
+                      const Divider(),
+                    ],
+                  ),
+                  if (filteredElements.isEmpty)
+                    _buildEmptySearchWidget(context)
+                  else
+                    ...filteredElements.map(
+                          (e) =>
+                          SimpleDialogOption(
+                            child: _buildOption(e, textWidth),
+                            onPressed: () {
+                              _selectItem(e);
+                            },
+                          ),
                     ),
                 ],
               ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              widget.header != null
-                  ? widget.header!
-                  : IconButton(
-                      padding: const EdgeInsets.all(0),
-                      iconSize: 40,
-                      icon: widget.closeIcon!,
-                      onPressed: () => Navigator.pop(context),
-                  ),
-              const SizedBox(height: 20,),
-              if (!widget.hideSearch)
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24),
-                  child: TextField(
-                    style: widget.searchStyle,
-                    decoration: widget.searchDecoration,
-                    onChanged: _filterElements,
-                  ),
-                ),
-              Expanded(
-                child: ListView(
-                  children: [
-                    widget.favoriteElements.isEmpty
-                        ? const DecoratedBox(decoration: BoxDecoration())
-                        : Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              ...widget.favoriteElements.map(
-                                (f) => SimpleDialogOption(
-                                  child: _buildOption(f),
-                                  onPressed: () {
-                                    _selectItem(f);
-                                  },
-                                ),
-                              ),
-                              const Divider(),
-                            ],
-                          ),
-                    if (filteredElements.isEmpty)
-                      _buildEmptySearchWidget(context)
-                    else
-                      ...filteredElements.map(
-                        (e) => SimpleDialogOption(
-                          child: _buildOption(e),
-                          onPressed: () {
-                            _selectItem(e);
-                          },
-                        ),
-                      ),
-                  ],
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
-      );
+      ),
+    );
+  }
 
-  Widget _buildOption(CountryCode e) {
+  Widget _buildOption(CountryCode e, double textWidth) {
     return Container(
       width: 400,
       child: Flex(
@@ -174,7 +189,14 @@ class _SelectionDialogState extends State<SelectionDialog> {
               overflow: TextOverflow.fade,
               style: widget.textStyle,
             ) : Row(children: [
-              Text(e.toCountryStringOnly(), style: widget.textStyle,),
+              SizedBox(
+                  width: textWidth,
+                  child: Text(
+                    e.toCountryStringOnly(),
+                    style: widget.textStyle,
+                    overflow: TextOverflow.fade,
+                  )
+              ),
               Spacer(flex: 1,),
               Text(e.dialCode ?? '', style: widget.codeTextStyle,),
             ],),
@@ -206,9 +228,9 @@ class _SelectionDialogState extends State<SelectionDialog> {
     setState(() {
       filteredElements = widget.elements
           .where((e) =>
-              e.code!.contains(s) ||
-              e.dialCode!.contains(s) ||
-              e.name!.toUpperCase().contains(s))
+      e.code!.contains(s) ||
+          e.dialCode!.contains(s) ||
+          e.name!.toUpperCase().contains(s))
           .toList();
     });
   }
