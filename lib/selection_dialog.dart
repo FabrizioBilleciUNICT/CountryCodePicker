@@ -83,11 +83,21 @@ class _SelectionDialogState extends State<SelectionDialog> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              IconButton(
-                padding: const EdgeInsets.all(0),
-                iconSize: 20,
-                icon: widget.closeIcon!,
-                onPressed: () => Navigator.pop(context),
+              Stack(
+                children: [
+                  Center(
+                    child: Text('Seleziona un prefisso internazionale'),
+                  ),
+                  Positioned(
+                    right: 14,
+                    child: IconButton(
+                      padding: const EdgeInsets.all(0),
+                      iconSize: 20,
+                      icon: widget.closeIcon!,
+                      onPressed: () => Navigator.pop(context),
+                    ),
+                  ),
+                ],
               ),
               if (!widget.hideSearch)
                 Padding(
