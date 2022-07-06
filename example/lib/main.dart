@@ -102,24 +102,10 @@ class _MyAppState extends State<MyApp> {
               CountryCodePicker(
                 header: Padding(
                   padding: const EdgeInsets.only(top: 30.0),
-                  child: Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      Center(
+                  child: Center(
                         child: Text('Seleziona un prefisso',
                           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),),
                       ),
-                      Positioned(
-                        right: 14,
-                        child: IconButton(
-                          padding: const EdgeInsets.all(10),
-                          iconSize: 30,
-                          icon: const Icon(Icons.close_rounded),
-                          onPressed: () => Navigator.pop(context),
-                        ),
-                      ),
-                    ],
-                  ),
                 ),
                 onChanged: print,
                 // Initial selection and favorite can be one of code ('IT') OR dial_code('+39')

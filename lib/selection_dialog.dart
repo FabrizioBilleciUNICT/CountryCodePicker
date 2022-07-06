@@ -49,7 +49,7 @@ class SelectionDialog extends StatefulWidget {
     this.hideSearch = false,
     this.closeIcon,
     this.showBoxShadow = false,
-    this.header
+    this.header,
   })  : this.searchDecoration = searchDecoration.prefixIcon == null
             ? searchDecoration.copyWith(prefixIcon: Icon(Icons.search))
             : searchDecoration,
@@ -93,7 +93,7 @@ class _SelectionDialogState extends State<SelectionDialog> {
                   ? widget.header!
                   : IconButton(
                       padding: const EdgeInsets.all(0),
-                      iconSize: 120,
+                      iconSize: 40,
                       icon: widget.closeIcon!,
                       onPressed: () => Navigator.pop(context),
                   ),
