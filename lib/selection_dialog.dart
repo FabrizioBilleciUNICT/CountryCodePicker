@@ -9,6 +9,7 @@ class SelectionDialog extends StatefulWidget {
   final InputDecoration searchDecoration;
   final TextStyle? searchStyle;
   final TextStyle? textStyle;
+  final TextStyle? codeTextStyle;
   final BoxDecoration? boxDecoration;
   final WidgetBuilder? emptySearchBuilder;
   final bool? showFlag;
@@ -39,6 +40,7 @@ class SelectionDialog extends StatefulWidget {
     InputDecoration searchDecoration = const InputDecoration(),
     this.searchStyle,
     this.textStyle,
+    this.codeTextStyle,
     this.boxDecoration,
     this.showFlag,
     this.flagDecoration,
@@ -157,7 +159,7 @@ class _SelectionDialogState extends State<SelectionDialog> {
                 margin: const EdgeInsets.only(right: 16.0),
                 decoration: widget.flagDecoration,
                 clipBehavior:
-                    widget.flagDecoration == null ? Clip.none : Clip.hardEdge,
+                widget.flagDecoration == null ? Clip.none : Clip.hardEdge,
                 child: Image.asset(
                   e.flagUri!,
                   package: 'country_code_picker',
@@ -167,13 +169,15 @@ class _SelectionDialogState extends State<SelectionDialog> {
             ),
           Expanded(
             flex: 4,
-            child: Text(
-              widget.showCountryOnly!
-                  ? e.toCountryStringOnly()
-                  : e.toLongString(),
+            child: widget.showCountryOnly!
+                ? Text(e.toCountryStringOnly(),
               overflow: TextOverflow.fade,
               style: widget.textStyle,
-            ),
+            ) : Row(children: [
+              Text(e.toCountryStringOnly(), style: widget.textStyle,),
+              Spacer(flex: 1,),
+              Text(e.dialCode ?? '', style: widget.codeTextStyle,),
+            ],),
           ),
         ],
       ),
