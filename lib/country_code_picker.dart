@@ -328,8 +328,7 @@ class CountryCodePickerState extends State<CountryCodePicker> {
         barrierColor: widget.barrierColor ?? Colors.grey.withOpacity(0.5),
         backgroundColor: widget.backgroundColor ?? Colors.transparent,
         context: context,
-        builder: (context) => Center(
-          child: SelectionDialog(
+        builder: (context) => SelectionDialog(
             elements,
             favoriteElements,
             showCountryOnly: widget.showCountryOnly,
@@ -349,7 +348,6 @@ class CountryCodePickerState extends State<CountryCodePicker> {
             hideSearch: widget.hideSearch,
             closeIcon: widget.closeIcon,
           ),
-        ),
       ).then((e) {
         if (e != null) {
           setState(() {
